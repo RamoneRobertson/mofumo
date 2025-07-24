@@ -1,4 +1,4 @@
-#Mofumo 🐾
+# Mofumo 🐾
 
 Pet services marketplace connecting expat pet owners with English-speaking providers in Tokyo
 
