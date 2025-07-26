@@ -143,6 +143,37 @@ create table bookings
             on update cascade on delete cascade
 );
 
+create table reviews
+(
+    id         bigint auto_increment
+        primary key,
+    booking_id binary(16)                          not null,
+    user_id    bigint                              not null,
+    rating     int                                 not null,
+    comment    text                                null,
+    createdAt  timestamp default current_timestamp not null,
+    constraint reviews_bookings_id_fk
+        foreign key (booking_id) references bookings (id),
+    constraint reviews_users_id_fk
+        foreign key (user_id) references users (id)
+);
+
+create table payments
+(
+    id                  binary                                                 default (uuid_to_bin(uuid())) not null
+    primary key,
+    booking_id          binary(16)                                                                           not null,
+    amount              int                                                                                  not null,
+    payment_method      enum ('credit_card', 'paypay', 'line_pay', 'cash')     default 'credit_card'         not null,
+    external_payment_id varchar(255)                                                                         not null,
+    status              enum ('pending', 'confirmed', 'cancelled', 'declined') default 'pending'             not null,
+    payment_date        date                                                   default (current_date())      not null,
+    createdAt           timestamp                                              default current_timestamp     not null,
+    constraint payments_bookings_id_fk
+    foreign key (booking_id) references bookings (id)
+);
+
+
 
 
 
