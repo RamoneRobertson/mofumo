@@ -38,7 +38,7 @@ create table providers
             on update cascade on delete restrict
 );
 
-create table pets_9
+create table pets
 (
     id                      bigint auto_increment
         primary key,
@@ -58,6 +58,68 @@ create table pets_9
         foreign key (owner_id) references users (id)
             on update cascade on delete cascade
 );
+
+create table services
+(
+    id               binary(16) default (uuid_to_bin(uuid()))                                                   not null
+        primary key,
+    provider_id      bigint                                                                                     not null,
+    service_name     varchar(50)                                                                                not null,
+    service_category enum ('GROOMING', 'VETERINARY', 'BOARDING', 'WALKING', 'TRAINING', 'DAYCARE', 'TRANSPORT') null,
+    duration_minutes int                                                                                        not null,
+    price            int                                                                                        not null,
+    active           boolean    default TRUE                                                                    not null,
+    createdAt        timestamp  default current_timestamp                                                       not null,
+    constraint services_providers_id_fk
+        foreign key (provider_id) references providers (id)
+            on update cascade on delete cascade
+);
+
+create table provider_availability
+(
+    id              bigint auto_increment primary key,
+    provider_id     bigint                                                           not null,
+    day_of_week     enum ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY') null,
+    available_date  date                                                             null,
+    start_time      time                                                             not null,
+    end_time        time                                                             not null,
+    spans_midnight  boolean                                            default false not null,
+    recurrence_type enum ('one_time', 'weekly', 'monthly')                          not null,
+    valid_from      date                                                             not null,
+    valid_until     date                                                             null,
+    is_blocked      boolean                                            default false not null,
+    is_exception    boolean                                            default false not null,
+    notes           varchar(255)                                                     null,
+    active          boolean                                            default true  not null,
+    created_at      timestamp                                          default current_timestamp not null,
+    updated_at      timestamp                                          default current_timestamp on update current_timestamp,
+
+    constraint provider_availability_service_provider_fk
+        foreign key (provider_id) references providers (id)
+            on update cascade on delete cascade,
+
+    constraint chk_time_order
+        check (
+            (spans_midnight = false and start_time < end_time) or
+            (spans_midnight = true and start_time >= end_time)
+            ),
+
+    constraint chk_date_logic
+        check (
+            (recurrence_type = 'one_time' and available_date is not null and day_of_week is null) or
+            (recurrence_type in ('weekly', 'monthly') and day_of_week is not null and available_date is null)
+            )
+);
+
+
+
+
+
+
+
+
+
+
 
 
 
