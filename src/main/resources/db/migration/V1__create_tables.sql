@@ -4,14 +4,14 @@ create table users
         primary key,
     email             varchar(255)                                         not null,
     password          varchar(255)                                         not null,
-    firstName         varchar(50)                                          not null,
-    lastName          varchar(50)                                          not null,
+    firs_name         varchar(50)                                          not null,
+    last_name         varchar(50)                                          not null,
     phone             varchar(20)                                          not null,
-    lineId            varchar(255)                                         null,
+    line_id           varchar(255)                                         null,
     ward              varchar(20)                                          null,
-    userType          enum ('CUSTOMER', 'PROVIDER') default 'CUSTOMER'     not null,
-    preferredLanguage varchar(3)                    default 'en'           null,
-    emailVerified     boolean                       default FALSE          not null,
+    user_type         enum ('CUSTOMER', 'PROVIDER') default 'CUSTOMER'     not null,
+    preferred_lang    varchar(3)                    default 'en'           null,
+    email_verified    boolean                       default FALSE          not null,
     active            boolean                                              not null,
     createdAt         timestamp                     default CURRENT_TIMESTAMP not null,
     updatedAt         timestamp                                            not null
@@ -21,7 +21,7 @@ create table providers
 (
     id                  bigint auto_increment
         primary key,
-    userId              bigint                              not null,
+    user_id              bigint                              not null,
     business_name       varchar(100)                        not null,
     description         text                                not null,
     service_types       json                                not null,
@@ -34,7 +34,7 @@ create table providers
     active              boolean   default TRUE              null,
     created_at          timestamp default current_timestamp not null,
     constraint providers_users_id_fk
-        foreign key (userId) references users (id)
+        foreign key (user_id) references users (id)
             on update cascade on delete restrict
 );
 
@@ -110,6 +110,42 @@ create table provider_availability
             (recurrence_type in ('weekly', 'monthly') and day_of_week is not null and available_date is null)
             )
 );
+
+create table bookings
+(
+    id               binary(16)                                                default (uuid_to_bin(uuid())) not null
+        primary key,
+    user_id          bigint                                                                                  not null,
+    pet_id           bigint                                                                                  not null,
+    provider_id      bigint                                                                                  not null,
+    service_id       binary(16)                                                                              not null,
+    booking_date     date                                                      default (current_date())        not null,
+    start_time       time                                                                                    not null,
+    end_time         time                                                                                    not null,
+    location_type    enum ('provider_location', 'customer_location', 'mobile') default 'provider_location'   not null,
+    special_requests text                                                                                    null,
+    total_price      int                                                                                     not null,
+    status           enum ('pending', 'confirmed', 'completed', 'cancelled')   default 'pending'             not null,
+    updatedAt        timestamp default current_timestamp on update current_timestamp not null,
+    createdAt        timestamp                                                 default current_timestamp     not null,
+
+    constraint bookings_pets_id_fk
+        foreign key (pet_id) references pets (id)
+            on update cascade on delete cascade,
+    constraint bookings_providers_id_fk
+        foreign key (provider_id) references providers (id)
+            on update cascade on delete cascade,
+    constraint bookings_services_id_fk
+        foreign key (service_id) references services (id)
+            on update cascade on delete cascade,
+    constraint bookings_users_id_fk
+        foreign key (user_id) references users (id)
+            on update cascade on delete cascade
+);
+
+
+
+
 
 
 
