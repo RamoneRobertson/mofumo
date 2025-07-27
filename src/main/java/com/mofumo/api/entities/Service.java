@@ -1,4 +1,4 @@
-package com.mofumo.api;
+package com.mofumo.api.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

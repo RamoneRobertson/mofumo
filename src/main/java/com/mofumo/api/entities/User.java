@@ -1,9 +1,5 @@
 package com.mofumo.api.entities;
 
-import com.mofumo.api.Booking;
-import com.mofumo.api.Pet;
-import com.mofumo.api.Provider;
-import com.mofumo.api.Review;
 import com.mofumo.api.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,6 +1,5 @@
-package com.mofumo.api;
+package com.mofumo.api.entities;
 
-import com.mofumo.api.entities.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
