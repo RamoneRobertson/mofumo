@@ -57,10 +57,15 @@ public class User {
   private Timestamp updatedAt;
 
   // Pets, Reviews, Providers, Bookings
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "owner")
   private Set<Pet> pets = new LinkedHashSet<>();
 
+  @OneToMany(mappedBy = "user")
   private Set<Booking> bookings = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
   private Set<Review> reviews = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
   private Set<Provider> providers = new LinkedHashSet<>();
 }

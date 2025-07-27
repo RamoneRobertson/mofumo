@@ -21,68 +21,54 @@ import java.util.Set;
 public class Provider {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "user_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
   private User user;
 
-  @Size(max = 100)
-  @NotNull
-  @Column(name = "business_name", nullable = false, length = 100)
+  @Column(name = "business_name")
   private String businessName;
 
-  @NotNull
-  @Lob
-  @Column(name = "description", nullable = false)
+  @Column(name = "description")
   private String description;
 
-  @NotNull
-  @Column(name = "service_types", nullable = false)
+  @Column(name = "service_types")
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, Object> serviceTypes;
 
-  @NotNull
-  @Column(name = "languages_spoken", nullable = false)
+  @Column(name = "languages_spoken")
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, Object> languagesSpoken;
 
-  @NotNull
-  @Column(name = "service_areas", nullable = false)
+  @Column(name = "service_areas")
   @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, Object> serviceAreas;
 
-  @ColumnDefault("0")
   @Column(name = "mobile_service")
   private Boolean mobileService;
 
   @Column(name = "base_price")
   private Integer basePrice;
 
-  @ColumnDefault("0")
   @Column(name = "verified")
   private Boolean verified;
 
-  @ColumnDefault("1")
   @Column(name = "accepts_new_clients")
   private Boolean acceptsNewClients;
 
-  @ColumnDefault("1")
   @Column(name = "active")
   private Boolean active;
 
-  @NotNull
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at")
   private Instant createdAt;
 
   @OneToMany(mappedBy = "provider")
   private Set<Booking> bookings = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "provider")
-  private Set<ProviderAvailability> providerAvailabilities = new LinkedHashSet<>();
+  private Set<ProviderAvailability> timeSlots = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "provider")
   private Set<Service> services = new LinkedHashSet<>();

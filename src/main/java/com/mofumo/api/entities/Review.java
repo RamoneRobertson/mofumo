@@ -15,30 +15,25 @@ import java.time.Instant;
 public class Review {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "booking_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "booking_id")
   private Booking booking;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "user_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
   private User user;
 
-  @NotNull
-  @Column(name = "rating", nullable = false)
+  @Column(name = "rating")
   private Integer rating;
 
-  @Lob
   @Column(name = "comment")
   private String comment;
 
-  @NotNull
   @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "createdAt", nullable = false)
+  @Column(name = "createdAt")
   private Instant createdAt;
 
 }

@@ -1,5 +1,6 @@
 package com.mofumo.api.entities;
 
+import com.mofumo.api.enums.Species;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,62 +22,44 @@ import java.util.Set;
 public class Pet {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @JoinColumn(name = "owner_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "owner_id")
   private User owner;
 
-  @Size(max = 25)
-  @NotNull
-  @Column(name = "name", nullable = false, length = 25)
+  @Column(name = "name")
   private String name;
 
-  @NotNull
-  @ColumnDefault("'OTHER'")
-  @Lob
-  @Column(name = "species", nullable = false)
-  private String species;
+  @Column(name = "species")
+  private Species species;
 
-  @Size(max = 100)
-  @Column(name = "breed", length = 100)
+  @Column(name = "breed")
   private String breed;
 
   @Column(name = "age_yr")
   private Integer ageYr;
 
-  @Column(name = "weight_kg", precision = 5, scale = 2)
+  @Column(name = "weight_kg")
   private BigDecimal weightKg;
 
-  @Lob
   @Column(name = "medical_conditions")
   private String medicalConditions;
 
-  @Lob
   @Column(name = "special_instruction")
   private String specialInstruction;
 
-  @Size(max = 100)
-  @NotNull
-  @Column(name = "emergency_contact_name", nullable = false, length = 100)
+  @Column(name = "emergency_contact_name")
   private String emergencyContactName;
 
-  @Size(max = 20)
-  @NotNull
-  @Column(name = "emergency_contact_phone", nullable = false, length = 20)
+  @Column(name = "emergency_contact_phone")
   private String emergencyContactPhone;
 
-  @NotNull
-  @ColumnDefault("1")
-  @Column(name = "active", nullable = false)
+  @Column(name = "active")
   private Boolean active = false;
 
-  @NotNull
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "createdAt", nullable = false)
+  @Column(name = "createdAt")
   private Instant createdAt;
 
   @OneToMany(mappedBy = "pet")

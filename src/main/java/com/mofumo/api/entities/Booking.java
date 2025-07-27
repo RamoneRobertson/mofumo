@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +18,8 @@ import java.util.Set;
 public class Booking {
   @Id
   @Column(name = "id")
-  private String id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -62,8 +64,8 @@ public class Booking {
   @Column(name = "createdAt")
   private Instant createdAt;
 
-  @OneToMany(mappedBy = "booking")
-  private Set<Payment> payments = new LinkedHashSet<>();
+  @OneToOne(mappedBy = "booking")
+  private Payment payment;
 
   @OneToMany(mappedBy = "booking")
   private Set<Review> reviews = new LinkedHashSet<>();

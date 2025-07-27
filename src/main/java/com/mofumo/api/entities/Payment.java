@@ -16,44 +16,31 @@ import java.time.LocalDate;
 @Table(name = "payments")
 public class Payment {
   @Id
-  @Size(max = 1)
-  @Column(name = "id", nullable = false, length = 1)
+  @Column(name = "id")
   private String id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "booking_id", nullable = false)
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "booking_id")
   private Booking booking;
 
-  @NotNull
-  @Column(name = "amount", nullable = false)
+  @Column(name = "amount")
   private Integer amount;
 
-  @NotNull
   @ColumnDefault("'credit_card'")
-  @Lob
-  @Column(name = "payment_method", nullable = false)
+  @Column(name = "payment_method")
   private String paymentMethod;
 
-  @Size(max = 255)
-  @NotNull
-  @Column(name = "external_payment_id", nullable = false)
+  @Column(name = "external_payment_id")
   private String externalPaymentId;
 
-  @NotNull
   @ColumnDefault("'pending'")
-  @Lob
-  @Column(name = "status", nullable = false)
+  @Column(name = "status")
   private String status;
 
-  @NotNull
-  @ColumnDefault("(curdate())")
-  @Column(name = "payment_date", nullable = false)
+  @Column(name = "payment_date")
   private LocalDate paymentDate;
 
-  @NotNull
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "createdAt", nullable = false)
+  @Column(name = "createdAt")
   private Instant createdAt;
 
 }

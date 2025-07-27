@@ -20,72 +20,52 @@ import java.time.LocalTime;
 public class ProviderAvailability {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @JoinColumn(name = "provider_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "provider_id")
   private Provider provider;
 
-  @Lob
   @Column(name = "day_of_week")
   private String dayOfWeek;
 
   @Column(name = "available_date")
   private LocalDate availableDate;
 
-  @NotNull
-  @Column(name = "start_time", nullable = false)
+  @Column(name = "start_time")
   private LocalTime startTime;
 
-  @NotNull
-  @Column(name = "end_time", nullable = false)
+  @Column(name = "end_time")
   private LocalTime endTime;
 
-  @NotNull
-  @ColumnDefault("0")
-  @Column(name = "spans_midnight", nullable = false)
+  @Column(name = "spans_midnight")
   private Boolean spansMidnight = false;
 
-  @NotNull
-  @Lob
-  @Column(name = "recurrence_type", nullable = false)
+  @Column(name = "recurrence_type")
   private String recurrenceType;
 
-  @NotNull
-  @Column(name = "valid_from", nullable = false)
+  @Column(name = "valid_from")
   private LocalDate validFrom;
 
   @Column(name = "valid_until")
   private LocalDate validUntil;
 
-  @NotNull
-  @ColumnDefault("0")
-  @Column(name = "is_blocked", nullable = false)
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
-  @NotNull
-  @ColumnDefault("0")
-  @Column(name = "is_exception", nullable = false)
+  @Column(name = "is_exception")
   private Boolean isException = false;
 
-  @Size(max = 255)
   @Column(name = "notes")
   private String notes;
 
-  @NotNull
-  @ColumnDefault("1")
-  @Column(name = "active", nullable = false)
+  @Column(name = "active")
   private Boolean active = false;
 
-  @NotNull
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at")
   private Instant createdAt;
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
   @Column(name = "updated_at")
   private Instant updatedAt;
 
