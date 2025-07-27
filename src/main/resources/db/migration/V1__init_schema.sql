@@ -4,7 +4,7 @@ create table users
         primary key,
     email             varchar(255)                                         not null,
     password          varchar(255)                                         not null,
-    firs_name         varchar(50)                                          not null,
+    first_name         varchar(50)                                          not null,
     last_name         varchar(50)                                          not null,
     phone             varchar(20)                                          not null,
     line_id           varchar(255)                                         null,
