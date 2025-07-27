@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,41 +20,30 @@ import java.util.Set;
 @Table(name = "services")
 public class Service {
   @Id
-  @Size(max = 16)
-  @Column(name = "id", nullable = false, length = 16)
-  private String id;
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @JoinColumn(name = "provider_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "provider_id")
   private Provider provider;
 
-  @Size(max = 50)
-  @NotNull
-  @Column(name = "service_name", nullable = false, length = 50)
+  @Column(name = "service_name")
   private String serviceName;
 
-  @Lob
   @Column(name = "service_category")
   private String serviceCategory;
 
-  @NotNull
-  @Column(name = "duration_minutes", nullable = false)
+  @Column(name = "duration_minutes")
   private Integer durationMinutes;
 
-  @NotNull
-  @Column(name = "price", nullable = false)
+  @Column(name = "price")
   private Integer price;
 
-  @NotNull
-  @ColumnDefault("1")
-  @Column(name = "active", nullable = false)
+  @Column(name = "active")
   private Boolean active = false;
 
-  @NotNull
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "createdAt", nullable = false)
+  @Column(name = "createdAt")
   private Instant createdAt;
 
   @OneToMany(mappedBy = "service")
