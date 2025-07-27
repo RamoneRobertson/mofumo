@@ -1,6 +1,6 @@
 # Mofumo 🐾
 
-Pet services marketplace connecting expat pet owners with English-speaking providers in Tokyo
+Pet services marketplace connecting expat pet owners with english speaking providers in Tokyo
 
 Mofumo bridges the language and cultural gap in Tokyo's pet care industry, making it easy for international residents to find english speaking pet services.
 # 🎯 Problem Statement
