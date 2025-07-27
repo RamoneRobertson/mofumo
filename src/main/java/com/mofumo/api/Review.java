@@ -1,0 +1,45 @@
+package com.mofumo.api;
+
+import com.mofumo.api.entities.User;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.Instant;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "reviews")
+public class Review {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  private Long id;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "booking_id", nullable = false)
+  private Booking booking;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
+
+  @NotNull
+  @Column(name = "rating", nullable = false)
+  private Integer rating;
+
+  @Lob
+  @Column(name = "comment")
+  private String comment;
+
+  @NotNull
+  @ColumnDefault("CURRENT_TIMESTAMP")
+  @Column(name = "createdAt", nullable = false)
+  private Instant createdAt;
+
+}

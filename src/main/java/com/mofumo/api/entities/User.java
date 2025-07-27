@@ -1,13 +1,21 @@
 package com.mofumo.api.entities;
 
+import com.mofumo.api.Booking;
+import com.mofumo.api.Pet;
+import com.mofumo.api.Provider;
+import com.mofumo.api.Review;
 import com.mofumo.api.enums.UserType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +61,9 @@ public class User {
   private Timestamp updatedAt;
 
   // Pets, Reviews, Providers, Bookings
+  @OneToMany(mappedBy = "user")
   private Set<Pet> pets = new LinkedHashSet<>();
+
   private Set<Booking> bookings = new LinkedHashSet<>();
   private Set<Review> reviews = new LinkedHashSet<>();
   private Set<Provider> providers = new LinkedHashSet<>();
