@@ -29,6 +29,6 @@ A bilingual marketplace platform that connects expat pet owners with verified, E
 - Backend: Spring Boot 3.5.3, Java 21
 - Database: MySQL with JSON support
 - Authentication: JWT with Spring Security
-- Payments: Stripe + PayPay integration
+- Payments: PayPay + Line Pay integration
 - Deployment: TBD
 - Testing: TBD
