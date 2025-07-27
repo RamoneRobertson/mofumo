@@ -2,12 +2,16 @@ package com.mofumo.api.entities;
 
 import com.mofumo.api.enums.UserType;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,8 +57,15 @@ public class User {
   private Timestamp updatedAt;
 
   // Pets, Reviews, Providers, Bookings
+  @OneToMany(mappedBy = "owner")
   private Set<Pet> pets = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
   private Set<Booking> bookings = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
   private Set<Review> reviews = new LinkedHashSet<>();
+
+  @OneToMany(mappedBy = "user")
   private Set<Provider> providers = new LinkedHashSet<>();
 }
