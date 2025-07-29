@@ -1,11 +1,13 @@
 package com.mofumo.api.entities;
 
 import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Ward;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Entity
@@ -39,9 +41,11 @@ public class User {
   private String lineId;
 
   @Column(name = "ward")
-  private String ward;
+  @Enumerated(EnumType.STRING)
+  private Ward ward;
 
   @Column(name = "user_type")
+  @Enumerated(EnumType.STRING)
   private UserType userType;
 
   @Column(name = "preferred_lang")
@@ -54,10 +58,10 @@ public class User {
   private Boolean active;
 
   @Column(name = "created_at")
-  private Timestamp createdAt;
+  private Instant createdAt;
 
   @Column(name = "updated_at")
-  private Timestamp updatedAt;
+  private Instant updatedAt;
 
   // Pets, Reviews, Providers, Bookings
   @OneToMany(mappedBy = "owner")
@@ -71,4 +75,17 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private Set<Provider> providers = new LinkedHashSet<>();
+
+  @PrePersist
+  public void onCreate() {
+    this.createdAt = Instant.now();
+    this.updatedAt = Instant.now();
+    this.emailVerified = false;
+    this.active = true;
+  }
+
+  @PreUpdate
+  public void onUpdate() {
+    this.updatedAt = Instant.now();
+  }
 }
