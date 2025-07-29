@@ -40,7 +40,7 @@ public class Payment {
   @Column(name = "payment_date")
   private LocalDate paymentDate;
 
-  @Column(name = "createdAt")
+  @Column(name = "created_at")
   private Instant createdAt;
 
 }

@@ -59,7 +59,7 @@ public class Pet {
   @Column(name = "active")
   private Boolean active = false;
 
-  @Column(name = "createdAt")
+  @Column(name = "created_at")
   private Instant createdAt;
 
   @OneToMany(mappedBy = "pet")

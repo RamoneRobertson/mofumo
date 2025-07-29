@@ -58,11 +58,11 @@ public class Booking {
   @Column(name = "status")
   private String status;
 
-  @Column(name = "updatedAt")
-  private Instant updatedAt;
-
-  @Column(name = "createdAt")
+  @Column(name = "created_at")
   private Instant createdAt;
+
+  @Column(name = "updated_at")
+  private Instant updatedAt;
 
   @OneToOne(mappedBy = "booking")
   private Payment payment;

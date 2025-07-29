@@ -31,6 +31,9 @@ public class Provider {
   @Column(name = "business_name")
   private String businessName;
 
+  @Column(name = "address")
+  private String address;
+
   @Column(name = "description")
   private String description;
 
