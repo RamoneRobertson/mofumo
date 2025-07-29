@@ -32,6 +32,9 @@ public class User {
   @Column(name = "phone")
   private String phone;
 
+  @Column(name = "address")
+  private String address;
+
   @Column(name = "line_id")
   private String lineId;
 
@@ -50,10 +53,10 @@ public class User {
   @Column(name = "active")
   private Boolean active;
 
-  @Column(name = "createdAt")
+  @Column(name = "created_at")
   private Timestamp createdAt;
 
-  @Column(name = "updatedAt")
+  @Column(name = "updated_at")
   private Timestamp updatedAt;
 
   // Pets, Reviews, Providers, Bookings

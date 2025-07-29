@@ -76,7 +76,7 @@ create table services
     duration_minutes int                                                                                        not null,
     price            int                                                                                        not null,
     active           boolean    default TRUE                                                                    not null,
-    createdAt        timestamp  default current_timestamp                                                       not null,
+    created_at       timestamp  default current_timestamp                                                       not null,
     constraint services_providers_id_fk
         foreign key (provider_id) references providers (id)
             on update cascade on delete cascade
@@ -133,8 +133,8 @@ create table bookings
     special_requests text                                                                                    null,
     total_price      int                                                                                     not null,
     status           enum ('pending', 'confirmed', 'completed', 'cancelled')   default 'pending'             not null,
-    updatedAt        timestamp default current_timestamp on update current_timestamp not null,
-    createdAt        timestamp                                                 default current_timestamp     not null,
+    updated_at       timestamp default current_timestamp on update current_timestamp not null,
+    created_at       timestamp                                                 default current_timestamp     not null,
 
     constraint bookings_pets_id_fk
         foreign key (pet_id) references pets (id)
@@ -158,7 +158,7 @@ create table reviews
     user_id    bigint                              not null,
     rating     int                                 not null,
     comment    text                                null,
-    createdAt  timestamp default current_timestamp not null,
+    created_at timestamp default current_timestamp not null,
     constraint reviews_bookings_id_fk
         foreign key (booking_id) references bookings (id),
     constraint reviews_users_id_fk
@@ -175,7 +175,7 @@ create table payments
     external_payment_id varchar(255)                                                                         not null,
     status              enum ('pending', 'confirmed', 'cancelled', 'declined') default 'pending'             not null,
     payment_date        date                                                   default (current_date())      not null,
-    createdAt           timestamp                                              default current_timestamp     not null,
+    created_at          timestamp                                              default current_timestamp     not null,
     constraint payments_bookings_id_fk
     foreign key (booking_id) references bookings (id)
 );

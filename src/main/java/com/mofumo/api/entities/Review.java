@@ -33,7 +33,7 @@ public class Review {
   private String comment;
 
   @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "createdAt")
+  @Column(name = "created_at")
   private Instant createdAt;
 
 }
