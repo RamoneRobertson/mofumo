@@ -18,4 +18,5 @@ public class UserDto {
   private Boolean emailVerified;
   private Boolean active;
   private Instant createdAt;
+  private Instant updatedAt;
 }

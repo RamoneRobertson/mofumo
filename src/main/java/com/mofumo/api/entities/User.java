@@ -1,6 +1,7 @@
 package com.mofumo.api.entities;
 
 import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Ward;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,9 +41,11 @@ public class User {
   private String lineId;
 
   @Column(name = "ward")
-  private String ward;
+  @Enumerated(EnumType.STRING)
+  private Ward ward;
 
   @Column(name = "user_type")
+  @Enumerated(EnumType.STRING)
   private UserType userType;
 
   @Column(name = "preferred_lang")
