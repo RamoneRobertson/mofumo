@@ -126,15 +126,15 @@ create table bookings
     pet_id           bigint                                                                                  not null,
     provider_id      bigint                                                                                  not null,
     service_id       binary(16)                                                                              not null,
-    booking_date     date                                                      default (current_date())        not null,
+    booking_date     date                                                      default (current_date())      not null,
     start_time       time                                                                                    not null,
     end_time         time                                                                                    not null,
     location_type    enum ('provider_location', 'customer_location', 'mobile') default 'provider_location'   not null,
     special_requests text                                                                                    null,
     total_price      int                                                                                     not null,
     status           enum ('pending', 'confirmed', 'completed', 'cancelled')   default 'pending'             not null,
-    updated_at       timestamp default current_timestamp on update current_timestamp not null,
     created_at       timestamp                                                 default current_timestamp     not null,
+    updated_at       timestamp default current_timestamp on update current_timestamp not null,
 
     constraint bookings_pets_id_fk
         foreign key (pet_id) references pets (id)
