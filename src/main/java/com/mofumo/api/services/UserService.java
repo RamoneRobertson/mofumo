@@ -18,4 +18,9 @@ public class UserService {
     userRepository.save(user);
     return userMapper.toDto(user);
   }
+
+  public UserDto getUser(Long userId){
+    var user = userRepository.findById(userId).orElseThrow(UserNotFoundException);
+    return userMapper.toDto(user);
+  }
 }
