@@ -39,7 +39,7 @@ public class UserController {
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<Map<String, String>> handleUserNotFoundException() {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-            Map.of("User", "User not found")
+            Map.of("Error", "User not found.")
     );
   }
 }

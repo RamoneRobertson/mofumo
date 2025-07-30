@@ -1,5 +1,6 @@
 package com.mofumo.api.services;
 
+import com.mofumo.api.UserNotFoundException;
 import com.mofumo.api.UserRepository;
 import com.mofumo.api.dtos.RegisterUserRequest;
 import com.mofumo.api.dtos.UserDto;
@@ -20,7 +21,7 @@ public class UserService {
   }
 
   public UserDto getUser(Long userId){
-    var user = userRepository.findById(userId).orElseThrow(UserNotFoundException);
+    var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     return userMapper.toDto(user);
   }
 }
