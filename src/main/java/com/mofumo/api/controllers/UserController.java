@@ -36,6 +36,14 @@ public class UserController {
     return userService.getUser(userId);
   }
 
+  @PutMapping("/{userId}")
+  public UserDto updateUser(
+        @PathVariable Long userId,
+        @RequestBody UpdateUserRequest request
+  ){
+
+  }
+
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<Map<String, String>> handleUserNotFoundException() {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
