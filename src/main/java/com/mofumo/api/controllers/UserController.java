@@ -5,10 +5,7 @@ import com.mofumo.api.dtos.UserDto;
 import com.mofumo.api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -28,5 +25,10 @@ public class UserController {
     var userDto = userService.registerUser(request);
     var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
     return ResponseEntity.created(uri).body(userDto);
+  }
+
+  @GetMapping("{userId}")
+  public UserDto getUser(@PathVariable Long userId) {
+    return userService.getUser(userId);
   }
 }
