@@ -1,5 +1,6 @@
 package com.mofumo.api.controllers;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -33,4 +34,22 @@ public class GlobalExceptionHandler {
     errors.put("Error", exception.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(
+          DataIntegrityViolationException exception
+  ){
+    // Check if the exception contains users_email_unique
+    if(exception.getMostSpecificCause().getMessage().contains("users_email_unique")) {
+      // Should return a status of 409 conflict
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(
+              Map.of("Error", "Email address already in use.")
+      );
+    }
+    // Else, it means some other field has invalid data
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(
+            Map.of("Error", "Data Integrity Violation " + exception.getMessage())
+    );
+  }
+
 }
