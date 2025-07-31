@@ -19,7 +19,9 @@ create table users
     email_verified    boolean                       default FALSE          not null,
     active            boolean                                              not null,
     created_at        timestamp                     default CURRENT_TIMESTAMP not null,
-    updated_at        timestamp                                            not null
+    updated_at        timestamp                                            not null,
+
+    constraint users_email_unique unique (email)
 );
 
 create table providers

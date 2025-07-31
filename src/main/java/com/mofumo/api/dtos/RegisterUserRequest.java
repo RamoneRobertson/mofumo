@@ -1,6 +1,7 @@
 package com.mofumo.api.dtos;
 
 import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Ward;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -51,6 +52,8 @@ public class RegisterUserRequest {
           message = "Address contains invalid characters."
   )
   private String address;
+
+  private Ward ward;
 
   @Size(max = 2, message = "Preferred language can only have a maximum of 2 characters. (e.g. jp,en)")
   private String preferredLang;
