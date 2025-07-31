@@ -2,6 +2,7 @@ package com.mofumo.api.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +13,7 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> handleExceptionErrors(
+  public ResponseEntity<Map<String, String>> handleMethodArgumentErrors(
           MethodArgumentNotValidException exception
   ){
     var errors = new HashMap<String, String>();
@@ -21,6 +22,15 @@ public class GlobalExceptionHandler {
               errors.put(error.getField(), error.getDefaultMessage());
             }
     );
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Map<String, String>> handleHttpMessageNotReadable(
+          HttpMessageNotReadableException exception
+  ){
+    var errors = new HashMap<String, String>();
+    errors.put("Error", exception.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
   }
 }

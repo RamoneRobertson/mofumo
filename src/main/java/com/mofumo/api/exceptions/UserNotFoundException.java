@@ -1,4 +1,4 @@
-package com.mofumo.api;
+package com.mofumo.api.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 

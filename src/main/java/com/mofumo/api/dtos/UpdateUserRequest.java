@@ -1,27 +1,17 @@
 package com.mofumo.api.dtos;
 
-import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Ward;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.Instant;
-
 @Data
-public class RegisterUserRequest {
+public class UpdateUserRequest {
   @Email(message = "Email must use a valid format.")
   @NotBlank(message = "Email is required.")
   private String email;
-
-  @NotBlank(message = "Password is required.")
-  @Size(min = 8, max = 24)
-  @Pattern(
-          regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&\\-_])[A-Za-z\\d@$!%*?&\\-_]{8,}$",
-          message = "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character."
-  )
-  private String password;
 
   @NotBlank(message = "First name is required.")
   @Pattern(
@@ -55,6 +45,6 @@ public class RegisterUserRequest {
   @Size(max = 2, message = "Preferred language can only have a maximum of 2 characters. (e.g. jp,en)")
   private String preferredLang;
 
-  private UserType userType = UserType.customer;
-
+  private Ward ward;
+  private String lineId;
 }
