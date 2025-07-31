@@ -1,7 +1,8 @@
 package com.mofumo.api.controllers;
 
-import com.mofumo.api.UserNotFoundException;
+import com.mofumo.api.exceptions.UserNotFoundException;
 import com.mofumo.api.dtos.RegisterUserRequest;
+import com.mofumo.api.dtos.UpdateUserRequest;
 import com.mofumo.api.dtos.UserDto;
 import com.mofumo.api.services.UserService;
 import jakarta.validation.Valid;
@@ -39,9 +40,9 @@ public class UserController {
   @PutMapping("/{userId}")
   public UserDto updateUser(
         @PathVariable Long userId,
-        @RequestBody UpdateUserRequest request
+        @Valid @RequestBody UpdateUserRequest request
   ){
-
+    return userService.updateUser(userId, request);
   }
 
   @ExceptionHandler(UserNotFoundException.class)

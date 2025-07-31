@@ -1,4 +1,4 @@
-package com.mofumo.api;
+package com.mofumo.api.repositories;
 
 
 import com.mofumo.api.entities.User;
