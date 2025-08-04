@@ -30,6 +30,7 @@ public class SecurityConfig {
         // Authorize (Define which endpoints are protected)
         .authorizeHttpRequests(c -> c
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
                 .anyRequest().authenticated()
         );
     return http.build();
