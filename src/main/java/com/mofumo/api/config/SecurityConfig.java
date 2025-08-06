@@ -43,12 +43,13 @@ public class SecurityConfig {
                 c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // Disable CSRF
         .csrf(AbstractHttpConfigurer::disable)
-        // Authorize (Define which endpoints are protected)
+        // Authorize (Define which endpoints are public or private)
         .authorizeHttpRequests(c -> c
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .requestMatchers(HttpMethod.GET, "/index.html").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/validate" ).permitAll()
                 .anyRequest().authenticated()
         );
     return http.build();

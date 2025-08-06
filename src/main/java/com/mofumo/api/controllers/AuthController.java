@@ -32,15 +32,23 @@ public class AuthController {
   public ResponseEntity<JwtResponse> login(
         @Valid @RequestBody LoginRequest request
   ){
+    // Authenticate the user email and password
     authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(
                   request.getEmail(),
                   request.getPassword()
           )
     );
-
+     // After authenticating the user generate a new token
     var token = jwtService.generateToken(request.getEmail());
     return ResponseEntity.ok(new JwtResponse(token));
+  }
+
+  @PostMapping("/validate")
+  // Pass the token using the Authorization header in the client request
+  public Boolean validate(@RequestHeader("Authorization") String authHeader){
+    var token = authHeader.replace("Bearer ", "");
+    return jwtService.validateToken(token);
   }
 
   @ExceptionHandler(BadCredentialsException.class)
