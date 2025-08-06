@@ -45,6 +45,8 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         // Authorize (Define which endpoints are protected)
         .authorizeHttpRequests(c -> c
+                .requestMatchers(HttpMethod.GET, "/").permitAll()
+                .requestMatchers(HttpMethod.GET, "/index.html").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "auth/login").permitAll()
                 .anyRequest().authenticated()
