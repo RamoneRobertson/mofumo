@@ -1,5 +1,6 @@
 package com.mofumo.api.services;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -26,11 +27,7 @@ public class JwtService {
   public Boolean validateToken(String token) {
     // Here we try to parse the jwt and extract the payload
     try {
-      var claims = Jwts.parser()
-              .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
-              .build()
-              .parseSignedClaims(token)
-              .getPayload();
+      var claims = getClaims(token);
 
       //If we have a valid token we need to make sure it is not expired
       return claims.getExpiration().after(new Date());
@@ -39,5 +36,17 @@ public class JwtService {
       // If we catch any exceptions it means the token is invalid and we return false
       return false;
     }
+  }
+
+  private Claims getClaims(String token) {
+    return Jwts.parser()
+            .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+  }
+
+  public String getEmailFromToken(String token) {
+    return getClaims(token).getSubject();
   }
 }

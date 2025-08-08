@@ -2,7 +2,6 @@ package com.mofumo.api.controllers;
 
 import com.mofumo.api.dtos.JwtResponse;
 import com.mofumo.api.dtos.LoginRequest;
-import com.mofumo.api.exceptions.UserNotFoundException;
 import com.mofumo.api.mappers.UserMapper;
 import com.mofumo.api.repositories.UserRepository;
 import com.mofumo.api.services.JwtService;
