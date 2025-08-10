@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -40,21 +38,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // Validate the token using your JwtService
     if(!jwtService.validateToken(token)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//      filterChain.doFilter(request, response);
+      filterChain.doFilter(request, response);
       return;
     }
 
+    // We need to create an authentication object
     var authentication = new UsernamePasswordAuthenticationToken(
-       jwtService.getEmailFromToken(token),
+            // First we need to get the subject
+            jwtService.getEmailFromToken(token),
+            // Now we need credentials (null for now)\
             null,
-            List.of()
+            null
     );
 
     authentication.setDetails(
             new WebAuthenticationDetailsSource().buildDetails(request)
     );
 
+    // SecurityContextHolder store info about the current authenticated user
     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    // Now we pass the request to the next filter in the chaink
     filterChain.doFilter(request, response);
   }
 }
