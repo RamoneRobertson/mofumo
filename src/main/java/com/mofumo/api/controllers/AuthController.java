@@ -6,6 +6,8 @@ import com.mofumo.api.dtos.UserDto;
 import com.mofumo.api.mappers.UserMapper;
 import com.mofumo.api.repositories.UserRepository;
 import com.mofumo.api.services.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,8 @@ public class AuthController {
 
   @PostMapping("/login")
   public ResponseEntity<JwtResponse> login(
-        @Valid @RequestBody LoginRequest request
+        @Valid @RequestBody LoginRequest request,
+        HttpServletResponse response
   ){
     // Authenticate the user email and password
     authenticationManager.authenticate(
@@ -43,8 +46,16 @@ public class AuthController {
 
     var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
      // After authenticating the user generate a new token
-    var token = jwtService.generateToken(user);
-    return ResponseEntity.ok(new JwtResponse(token));
+    var accessToken = jwtService.generateAccessToken(user);
+    var refreshToken = jwtService.generateRefreshToken(user);
+    var cookie = new Cookie("refreshToken", refreshToken);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    cookie.setPath("/auth/refresh");
+    cookie.setMaxAge(604800);
+    response.addCookie(cookie);
+
+    return ResponseEntity.ok().body(new JwtResponse(accessToken));
   }
 
   @PostMapping("/validate")
