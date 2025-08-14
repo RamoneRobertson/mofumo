@@ -52,7 +52,7 @@ public class AuthController {
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/auth/refresh");
-    cookie.setMaxAge(300);
+    cookie.setMaxAge(604800);
     response.addCookie(cookie);
 
     return ResponseEntity.ok().body(new JwtResponse(accessToken));
