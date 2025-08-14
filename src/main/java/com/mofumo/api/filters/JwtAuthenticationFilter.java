@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // We need to create an authentication object
     var authentication = new UsernamePasswordAuthenticationToken(
             // First we need to get the subject
-            jwtService.getEmailFromToken(token),
+            jwtService.getUserIdFromToken(token),
             // Now we need credentials (null for now)\
             null,
             null

@@ -1,5 +1,7 @@
 package com.mofumo.api.services;
 
+import com.mofumo.api.entities.User;
+import com.mofumo.api.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,12 +13,21 @@ import java.util.Date;
 
 @Service
 public class JwtService {
+  private final UserRepository userRepository;
   @Value("${spring.jwt.secret}")
   private String secret;
-  public String generateToken(String email) {
+
+  public JwtService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  public String generateToken(User user) {
     final long tokenExpiration = 86400; // number of seconds in 1 day
     return Jwts.builder()
-            .subject(email)
+            .subject(user.getId().toString())
+            .claim("Email: ", user.getEmail())
+            .claim("Last Name: ", user.getLastName())
+            .claim("First Name: ", user.getFirstName())
             .issuedAt(new Date())
             // Set the expiration limit of the token
             .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
@@ -46,7 +57,7 @@ public class JwtService {
             .getPayload();
   }
 
-  public String getEmailFromToken(String token) {
-    return getClaims(token).getSubject();
+  public Long getUserIdFromToken(String token) {
+    return Long.valueOf(getClaims(token).getSubject());
   }
 }

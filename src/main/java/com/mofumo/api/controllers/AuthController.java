@@ -2,6 +2,7 @@ package com.mofumo.api.controllers;
 
 import com.mofumo.api.dtos.JwtResponse;
 import com.mofumo.api.dtos.LoginRequest;
+import com.mofumo.api.dtos.UserDto;
 import com.mofumo.api.mappers.UserMapper;
 import com.mofumo.api.repositories.UserRepository;
 import com.mofumo.api.services.JwtService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +40,10 @@ public class AuthController {
                   request.getPassword()
           )
     );
+
+    var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
      // After authenticating the user generate a new token
-    var token = jwtService.generateToken(request.getEmail());
+    var token = jwtService.generateToken(user);
     return ResponseEntity.ok(new JwtResponse(token));
   }
 
@@ -48,6 +52,18 @@ public class AuthController {
   public Boolean validate(@RequestHeader("Authorization") String authHeader){
     var token = authHeader.replace("Bearer ", "");
     return jwtService.validateToken(token);
+  }
+
+  @GetMapping("/me")
+  public ResponseEntity<UserDto> me(){
+    var authentication = SecurityContextHolder.getContext().getAuthentication();
+    var userId = (Long) authentication.getPrincipal();
+    var user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    var userDto = userMapper.toDto(user);
+    return ResponseEntity.ok(userDto);
   }
 
   @ExceptionHandler(BadCredentialsException.class)
