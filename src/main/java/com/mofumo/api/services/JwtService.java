@@ -6,31 +6,38 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Service
 public class JwtService {
   private final UserRepository userRepository;
   @Value("${spring.jwt.secret}")
   private String secret;
 
-  public JwtService(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public String generateAccessToken(User user) {
+    final long tokenExpiration = 300; // 5 minutes
+    return generateToken(user, tokenExpiration);
   }
 
-  public String generateToken(User user) {
-    final long tokenExpiration = 86400; // number of seconds in 1 day
+  public String generateRefreshToken(User user) {
+    final long tokenExpiration = 604800; // 7 days
+    return generateToken(user, tokenExpiration);
+  }
+
+  private String generateToken(User user, long tokenExpiration){
     return Jwts.builder()
             .subject(user.getId().toString())
             .claim("Email: ", user.getEmail())
             .claim("Last Name: ", user.getLastName())
             .claim("First Name: ", user.getFirstName())
             .issuedAt(new Date())
-            // Set the expiration limit of the token
-            .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
+            .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
             .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
             .compact();
   }
