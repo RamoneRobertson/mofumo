@@ -1,5 +1,6 @@
 package com.mofumo.api.services;
 
+import com.mofumo.api.config.JwtConfig;
 import com.mofumo.api.entities.User;
 import com.mofumo.api.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -13,21 +14,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class JwtService {
   private final UserRepository userRepository;
-  @Value("${spring.jwt.secret}")
-  private String secret;
+  private final JwtConfig jwtConfig;
 
   public String generateAccessToken(User user) {
-    final long tokenExpiration = 300; // 5 minutes
-    return generateToken(user, tokenExpiration);
+    return generateToken(user, jwtConfig.getAccessTokenExpiration());
   }
 
   public String generateRefreshToken(User user) {
-    final long tokenExpiration = 604800; // 7 days
-    return generateToken(user, tokenExpiration);
+    return generateToken(user, jwtConfig.getRefreshTokenExpiration());
   }
 
   private String generateToken(User user, long tokenExpiration){
@@ -38,7 +36,7 @@ public class JwtService {
             .claim("First Name: ", user.getFirstName())
             .issuedAt(new Date())
             .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
-            .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+            .signWith(jwtConfig.getSecretKey())
             .compact();
   }
   // the purpose of this method is to validate the generated Jwt tokens which gives access to protected endpoints
@@ -58,7 +56,7 @@ public class JwtService {
 
   private Claims getClaims(String token) {
     return Jwts.parser()
-            .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+            .verifyWith(jwtConfig.getSecretKey())
             .build()
             .parseSignedClaims(token)
             .getPayload();

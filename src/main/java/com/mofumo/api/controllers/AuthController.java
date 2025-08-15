@@ -1,5 +1,6 @@
 package com.mofumo.api.controllers;
 
+import com.mofumo.api.config.JwtConfig;
 import com.mofumo.api.dtos.JwtResponse;
 import com.mofumo.api.dtos.LoginRequest;
 import com.mofumo.api.dtos.UserDto;
@@ -30,6 +31,7 @@ public class AuthController {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
+  private final JwtConfig jwtConfig;
 
   @PostMapping("/login")
   public ResponseEntity<JwtResponse> login(
@@ -52,7 +54,7 @@ public class AuthController {
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/auth/refresh");
-    cookie.setMaxAge(604800);
+    cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration()); // 7 days
     response.addCookie(cookie);
 
     return ResponseEntity.ok().body(new JwtResponse(accessToken));
