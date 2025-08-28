@@ -25,10 +25,12 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    var user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    var user = userRepository.findByEmail(email).orElseThrow(
+            () -> new UsernameNotFoundException("User not found"));
     return new User(
             user.getEmail(),
             user.getPassword(),
+            // authorities : things like permissions ect.. right now just return an empty list
             Collections.emptyList()
     );
   }

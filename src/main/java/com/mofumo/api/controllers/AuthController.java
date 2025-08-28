@@ -60,11 +60,27 @@ public class AuthController {
     return ResponseEntity.ok().body(new JwtResponse(accessToken));
   }
 
-  @PostMapping("/validate")
-  // Pass the token using the Authorization header in the client request
-  public Boolean validate(@RequestHeader("Authorization") String authHeader){
-    var token = authHeader.replace("Bearer ", "");
-    return jwtService.validateToken(token);
+  @PostMapping("/refresh")
+  public ResponseEntity<JwtResponse> refreshToken(
+          @CookieValue(value = "refreshToken") String refreshToken
+  ) {
+    // First we need to validate the token
+    if(!jwtService.validateToken(refreshToken)) {
+      // if the token is invalid return an unauthorized response
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    // if the token is valid we need to extract the userId
+    var userId = jwtService.getUserIdFromToken(refreshToken);
+
+    // get the associated user from the repository
+    var user = userRepository.findById(userId).orElseThrow();
+
+    // generate an access token
+    var accessToken = jwtService.generateAccessToken(user);
+
+    // return an ok response
+    return ResponseEntity.ok().body(new JwtResponse(accessToken));
   }
 
   @GetMapping("/me")
