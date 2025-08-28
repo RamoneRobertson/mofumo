@@ -81,8 +81,6 @@ public class AuthController {
 
     // return an ok response
     return ResponseEntity.ok().body(new JwtResponse(accessToken));
-
-
   }
 
   @GetMapping("/me")
