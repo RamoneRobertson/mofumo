@@ -14,7 +14,7 @@ create table users
                            'shinjuku', 'suginami', 'sumida', 'taito', 'toshima'
                       )                                                    null,
     line_id           varchar(255)                                         null,
-    user_type         enum ('customer', 'provider') default 'customer'     not null,
+    role              enum ('customer', 'provider') default 'customer'     not null,
     preferred_lang    varchar(3)                    default 'en'           null,
     email_verified    boolean                       default FALSE          not null,
     active            boolean                                              not null,

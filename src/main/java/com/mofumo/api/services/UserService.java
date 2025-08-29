@@ -1,5 +1,6 @@
 package com.mofumo.api.services;
 
+import com.mofumo.api.enums.Role;
 import com.mofumo.api.exceptions.UserNotFoundException;
 import com.mofumo.api.repositories.UserRepository;
 import com.mofumo.api.dtos.RegisterUserRequest;
@@ -38,6 +39,7 @@ public class UserService implements UserDetailsService {
   public UserDto registerUser(RegisterUserRequest request){
     var user = userMapper.toEntity(request);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setRole(Role.customer);
     userRepository.save(user);
     return userMapper.toDto(user);
   }

@@ -1,6 +1,6 @@
 package com.mofumo.api.dtos;
 
-import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Role;
 import lombok.Data;
 
 import java.time.Instant;
@@ -14,7 +14,7 @@ public class UserDto {
   private String phone;
   private String address;
   private String ward;
-  private UserType userType;
+  private Role role;
   private Boolean emailVerified;
   private Boolean active;
   private Instant createdAt;

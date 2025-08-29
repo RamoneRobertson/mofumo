@@ -1,5 +1,5 @@
 package com.mofumo.api.enums;
 
-public enum UserType {
+public enum Role {
   customer, provider
 }

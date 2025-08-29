@@ -1,12 +1,11 @@
 package com.mofumo.api.entities;
 
-import com.mofumo.api.enums.UserType;
+import com.mofumo.api.enums.Role;
 import com.mofumo.api.enums.Ward;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 
@@ -24,6 +23,10 @@ public class User {
 
   @Column(name = "password")
   private String password;
+
+  @Column(name = "role")
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   @Column(name = "first_name")
   private String firstName;
@@ -43,10 +46,6 @@ public class User {
   @Column(name = "ward")
   @Enumerated(EnumType.STRING)
   private Ward ward;
-
-  @Column(name = "user_type")
-  @Enumerated(EnumType.STRING)
-  private UserType userType;
 
   @Column(name = "preferred_lang")
   private String preferredLang;
