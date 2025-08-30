@@ -8,13 +8,13 @@ create table users
     last_name         varchar(50)                                          not null,
     phone             varchar(20)                                          not null,
     address           varchar(255)                                         not null,
-    ward              enum('adachi', 'arakawa', 'bunkyo', 'chiyoda', 'chuo', 'edogawa',
-                           'itabashi', 'katsushika', 'kita', 'koto', 'meguro', 'minato',
-                           'nakano', 'nerima', 'ota', 'setagaya', 'shibuya', 'shinagawa',
-                           'shinjuku', 'suginami', 'sumida', 'taito', 'toshima'
+    ward              enum('ADACHI', 'ARAKAWA', 'BUNKYO', 'CHIYODA', 'CHUO', 'EDOGAWA',
+                           'ITABASHI', 'KATSUSHIKA', 'KITA', 'KOTO', 'MEGURO', 'MINATO',
+                           'NAKANO', 'NERIMA', 'OTA', 'SETAGAYA', 'SHIBUYA', 'SHINAGAWA',
+                           'SHINJUKU', 'SUGINAMI', 'SUMIDA', 'TAITO', 'TOSHIMA'
                       )                                                    null,
     line_id           varchar(255)                                         null,
-    role              enum ('customer', 'provider') default 'customer'     not null,
+    role              enum ('ADMIN', 'CUSTOMER', 'PROVIDER') default 'CUSTOMER'     not null,
     preferred_lang    varchar(3)                    default 'en'           null,
     email_verified    boolean                       default FALSE          not null,
     active            boolean                                              not null,
@@ -52,7 +52,7 @@ create table pets
         primary key,
     owner_id                bigint                                                                                      not null,
     name                    varchar(25)                                                                                 not null,
-    species                 enum ('dog', 'cat', 'fish', 'bird', 'hamster', 'rabbit', 'other')                           not null,
+    species                 enum ('DOG', 'CAT', 'FISH', 'BIRD', 'HAMSTER', 'RABBIT', 'OTHER')                           not null,
     breed                   varchar(100)                                                                                null,
     age_yr                  int                                                                                         null,
     weight_kg               decimal(5, 2)                                                                               null,
@@ -74,7 +74,7 @@ create table services
         primary key,
     provider_id      bigint                                                                                     not null,
     service_name     varchar(50)                                                                                not null,
-    service_category enum ('grooming', 'veterinary', 'boarding', 'walking', 'training', 'daycare', 'transport ') null,
+    service_category enum ('BOARDING', 'DAYCARE', 'GROOMING', 'TRAINING', 'TRANSPORT', 'VETERINARY', 'WALKING') null,
     duration_minutes int                                                                                        not null,
     price            int                                                                                        not null,
     active           boolean    default TRUE                                                                    not null,
@@ -88,12 +88,12 @@ create table provider_availability
 (
     id              bigint auto_increment primary key,
     provider_id     bigint                                                           not null,
-    day_of_week     enum ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday') null,
+    day_of_week     enum ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY') null,
     available_date  date                                                             null,
     start_time      time                                                             not null,
     end_time        time                                                             not null,
     spans_midnight  boolean                                            default false not null,
-    recurrence_type enum ('one_time', 'weekly', 'monthly')                           not null,
+    recurrence_type enum ('ONE_TIME', 'WEEKLY', 'MONTHLY')                           not null,
     valid_from      date                                                             not null,
     valid_until     date                                                             null,
     is_blocked      boolean                                            default false not null,
@@ -115,8 +115,8 @@ create table provider_availability
 
     constraint chk_date_logic
         check (
-            (recurrence_type = 'one_time' and available_date is not null and day_of_week is null) or
-            (recurrence_type in ('weekly', 'monthly') and day_of_week is not null and available_date is null)
+            (recurrence_type = 'ONE_TIME' and available_date is not null and day_of_week is null) or
+            (recurrence_type in ('WEEKLY', 'MONTHLY') and day_of_week is not null and available_date is null)
             )
 );
 
@@ -131,10 +131,10 @@ create table bookings
     booking_date     date                                                      default (current_date())      not null,
     start_time       time                                                                                    not null,
     end_time         time                                                                                    not null,
-    location_type    enum ('provider_location', 'customer_location', 'mobile') default 'provider_location'   not null,
+    location_type    enum ('PROVIDER_LOCATION', 'CUSTOMER_LOCATION', 'MOBILE') default 'PROVIDER_LOCATION'   not null,
     special_requests text                                                                                    null,
     total_price      int                                                                                     not null,
-    status           enum ('pending', 'confirmed', 'completed', 'cancelled')   default 'pending'             not null,
+    status           enum ('PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED')   default 'PENDING'             not null,
     created_at       timestamp                                                 default current_timestamp     not null,
     updated_at       timestamp default current_timestamp on update current_timestamp not null,
 
@@ -173,9 +173,9 @@ create table payments
     primary key,
     booking_id          binary(16)                                                                           not null,
     amount              int                                                                                  not null,
-    payment_method      enum ('credit_card', 'paypay', 'line_pay', 'cash')     default 'credit_card'         not null,
+    payment_method      enum ('CREDIT_CARD', 'PAYPAY', 'LINE_PAY', 'CASH')     default 'CREDIT_CARD'         not null,
     external_payment_id varchar(255)                                                                         not null,
-    status              enum ('pending', 'confirmed', 'cancelled', 'declined') default 'pending'             not null,
+    status              enum ('PENDING', 'CONFIRMED', 'CANCELLED', 'DECLINED') default 'PENDING'             not null,
     payment_date        date                                                   default (current_date())      not null,
     created_at          timestamp                                              default current_timestamp     not null,
     constraint payments_bookings_id_fk

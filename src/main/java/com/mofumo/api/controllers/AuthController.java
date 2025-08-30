@@ -50,28 +50,28 @@ public class AuthController {
      // After authenticating the user generate a new token
     var accessToken = jwtService.generateAccessToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
-    var cookie = new Cookie("refreshToken", refreshToken);
+    var cookie = new Cookie("refreshToken", refreshToken.toString());
     cookie.setHttpOnly(true);
     cookie.setSecure(true);
     cookie.setPath("/auth/refresh");
     cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration()); // 7 days
     response.addCookie(cookie);
 
-    return ResponseEntity.ok().body(new JwtResponse(accessToken));
+    return ResponseEntity.ok().body(new JwtResponse(accessToken.toString()));
   }
 
   @PostMapping("/refresh")
   public ResponseEntity<JwtResponse> refreshToken(
           @CookieValue(value = "refreshToken") String refreshToken
   ) {
+    var jwt = jwtService.parseToken(refreshToken);
     // First we need to validate the token
-    if(!jwtService.validateToken(refreshToken)) {
-      // if the token is invalid return an unauthorized response
+    if(jwt == null || jwt.isExpired()) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // if the token is valid we need to extract the userId
-    var userId = jwtService.getUserIdFromToken(refreshToken);
+    var userId = jwt.getUserId();
 
     // get the associated user from the repository
     var user = userRepository.findById(userId).orElseThrow();
@@ -80,7 +80,7 @@ public class AuthController {
     var accessToken = jwtService.generateAccessToken(user);
 
     // return an ok response
-    return ResponseEntity.ok().body(new JwtResponse(accessToken));
+    return ResponseEntity.ok().body(new JwtResponse(accessToken.toString()));
   }
 
   @GetMapping("/me")

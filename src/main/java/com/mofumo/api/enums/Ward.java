@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.mofumo.api.exceptions.EnumNotValidException;
 
 public enum Ward {
-  adachi, arakawa, bunkyo, chiyoda, chuo, edogawa,
-  itabashi, katsushika, kita, koto, meguro, minato,
-  nakano, nerima, ota, setagaya, shibuya, shinagawa,
-  shinjuku, suginami, sumida, taito, toshima;
+  ADACHI, ARAKAWA, BUNKYO, CHIYODA, CHUO, EDOGAWA,
+  ITABASHI, KATSUSHIKA, KITA, KOTO, MEGURO, MINATO,
+  NAKANO, NERIMA, OTA, SETAGAYA, SHIBUYA, SHINAGAWA,
+  SHINJUKU, SUGINAMI, SUMIDA, TAITO, TOSHIMA;
 
   @JsonCreator
   public static Ward from(String value){

@@ -2,7 +2,6 @@ package com.mofumo.api.services;
 
 import com.mofumo.api.config.JwtConfig;
 import com.mofumo.api.entities.User;
-import com.mofumo.api.repositories.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,43 +10,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class JwtService {
   private final JwtConfig jwtConfig;
 
-  public String generateAccessToken(User user) {
+  public Jwt generateAccessToken(User user) {
     return generateToken(user, jwtConfig.getAccessTokenExpiration());
   }
-  public String generateRefreshToken(User user) {
+  public Jwt generateRefreshToken(User user) {
     return generateToken(user, jwtConfig.getRefreshTokenExpiration());
   }
 
-  private String generateToken(User user, long tokenExpiration){
-    return Jwts.builder()
-            .subject(user.getId().toString())
-            .claim("Email: ", user.getEmail())
-            .claim("Last Name: ", user.getLastName())
-            .claim("First Name: ", user.getFirstName())
-            .claim("Role: ", user.getRole())
+  private Jwt generateToken(User user, long tokenExpiration){
+    var claims = Jwts.claims().subject(user.getId().toString())
             .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + tokenExpiration * 1000))
-            .signWith(jwtConfig.getSecretKey())
-            .compact();
-  }
-  // the purpose of this method is to validate the generated Jwt tokens which gives access to protected endpoints
-  public Boolean validateToken(String token) {
-    // Here we try to parse the jwt and extract the payload
-    try {
-      var claims = getClaims(token);
+            .expiration(new Date(System.currentTimeMillis() + 1000 *tokenExpiration))
+            .add("email", user.getEmail())
+            .add("firstName", user.getFirstName())
+            .add("lastName", user.getLastName())
+            .add("role", user.getRole())
+            .build();
 
-      //If we have a valid token we need to make sure it is not expired
-      return claims.getExpiration().after(new Date());
-    }
-    catch (JwtException ex) {
-      // If we catch any exceptions it means the token is invalid and we return false
-      return false;
-    }
+    return new Jwt(claims, jwtConfig.getSecretKey());
   }
 
   private Claims getClaims(String token) {
@@ -58,7 +43,14 @@ public class JwtService {
             .getPayload();
   }
 
-  public Long getUserIdFromToken(String token) {
-    return Long.valueOf(getClaims(token).getSubject());
+  public Jwt parseToken(String token){
+    try {
+      var claims = getClaims(token);
+      return new Jwt(claims, jwtConfig.getSecretKey());
+    }
+    catch(JwtException e){
+      return null;
+    }
+
   }
 }
