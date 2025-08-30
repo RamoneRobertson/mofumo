@@ -70,11 +70,8 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    // if the token is valid we need to extract the userId
-    var userId = jwt.getUserId();
-
     // get the associated user from the repository
-    var user = userRepository.findById(userId).orElseThrow();
+    var user = userRepository.findById(jwt.getUserId()).orElseThrow();
 
     // generate an access token
     var accessToken = jwtService.generateAccessToken(user);

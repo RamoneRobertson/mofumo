@@ -51,6 +51,5 @@ public class JwtService {
     catch(JwtException e){
       return null;
     }
-
   }
 }

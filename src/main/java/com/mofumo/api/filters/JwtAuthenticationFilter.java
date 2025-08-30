@@ -39,8 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // Validate the token, check if the token is null or expired
     if(jwt == null || jwt.isExpired()) {
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      // Send the request to the next chain in the filteer
+      // Send the request to the next chain in the filter
       filterChain.doFilter(request, response);
       return;
     }
