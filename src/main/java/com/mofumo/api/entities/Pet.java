@@ -62,7 +62,22 @@ public class Pet {
   @Column(name = "created_at")
   private Instant createdAt;
 
+  @Column(name = "updated_at")
+  private Instant updatedAt;
+
   @OneToMany(mappedBy = "pet")
   private Set<Booking> bookings = new LinkedHashSet<>();
+
+  @PrePersist
+  public void onCreate() {
+    this.createdAt = Instant.now();
+    this.updatedAt = Instant.now();
+    this.active = true;
+  }
+
+  @PreUpdate
+  public void onUpdate() {
+    this.updatedAt = Instant.now();
+  }
 
 }
