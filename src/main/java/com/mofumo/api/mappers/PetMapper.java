@@ -4,9 +4,11 @@ import com.mofumo.api.dtos.AddNewPetRequest;
 import com.mofumo.api.dtos.PetDto;
 import com.mofumo.api.entities.Pet;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface PetMapper {
+
   Pet toEntity(AddNewPetRequest request);
   PetDto toDto(Pet pet);
 }

@@ -50,9 +50,9 @@ create table pets
 (
     id                      bigint auto_increment
         primary key,
-    owner_id                bigint                                                                                      not null,
+    owner_id                 bigint                                                                                      not null,
     name                    varchar(25)                                                                                 not null,
-    species                 enum ('DOG', 'CAT', 'FISH', 'BIRD', 'HAMSTER', 'RABBIT', 'OTHER')                           not null,
+    species                 enum ('BIRD', 'CAT', 'DOG', 'HAMSTER', 'RABBIT', 'OTHER')                                   not null,
     breed                   varchar(100)                                                                                null,
     age_yr                  int                                                                                         null,
     weight_kg               decimal(5, 2)                                                                               null,

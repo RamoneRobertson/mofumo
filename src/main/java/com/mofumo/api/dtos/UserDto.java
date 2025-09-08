@@ -1,6 +1,8 @@
 package com.mofumo.api.dtos;
 
 import com.mofumo.api.enums.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.time.Instant;

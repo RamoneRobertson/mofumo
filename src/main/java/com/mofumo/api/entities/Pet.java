@@ -2,13 +2,8 @@ package com.mofumo.api.entities;
 
 import com.mofumo.api.enums.Species;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,12 +22,13 @@ public class Pet {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id")
-  private User owner;
+  private User user;
 
   @Column(name = "name")
   private String name;
 
   @Column(name = "species")
+  @Enumerated(EnumType.STRING)
   private Species species;
 
   @Column(name = "breed")
