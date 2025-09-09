@@ -80,6 +80,11 @@ public class User {
     pet.setUser(this);
   }
 
+  public void removePet(Pet pet) {
+    pets.remove(pet);
+    pet.setUser(null);
+  }
+
   @PrePersist
   public void onCreate() {
     this.createdAt = Instant.now();

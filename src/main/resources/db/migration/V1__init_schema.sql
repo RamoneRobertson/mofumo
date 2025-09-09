@@ -56,6 +56,7 @@ create table pets
     breed                   varchar(100)                                                                                null,
     age_yr                  int                                                                                         null,
     weight_kg               decimal(5, 2)                                                                               null,
+    gender                  enum ('FEMALE', 'MALE', 'OTHER')                                                            null,
     medical_conditions      text                                                                                        null,
     special_instruction     text                                                                                        null,
     emergency_contact_name  varchar(100)                                                                                not null,

@@ -1,5 +1,6 @@
 package com.mofumo.api.entities;
 
+import com.mofumo.api.enums.Gender;
 import com.mofumo.api.enums.Species;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,6 +40,10 @@ public class Pet {
 
   @Column(name = "weight_kg")
   private BigDecimal weightKg;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "gender")
+  private Gender gender;
 
   @Column(name = "medical_conditions")
   private String medicalConditions;
