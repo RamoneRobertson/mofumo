@@ -63,7 +63,7 @@ public class User {
   private Instant updatedAt;
 
   // Pets, Reviews, Providers, Bookings
-  @OneToMany(mappedBy = "owner")
+  @OneToMany(mappedBy = "user")
   private Set<Pet> pets = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "user")
@@ -74,6 +74,16 @@ public class User {
 
   @OneToMany(mappedBy = "user")
   private Set<Provider> providers = new LinkedHashSet<>();
+
+  public void addPet(Pet pet) {
+    pets.add(pet);
+    pet.setUser(this);
+  }
+
+  public void removePet(Pet pet) {
+    pets.remove(pet);
+    pet.setUser(null);
+  }
 
   @PrePersist
   public void onCreate() {

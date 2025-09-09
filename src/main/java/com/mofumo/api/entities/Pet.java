@@ -1,14 +1,10 @@
 package com.mofumo.api.entities;
 
+import com.mofumo.api.enums.Gender;
 import com.mofumo.api.enums.Species;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,12 +23,13 @@ public class Pet {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id")
-  private User owner;
+  private User user;
 
   @Column(name = "name")
   private String name;
 
   @Column(name = "species")
+  @Enumerated(EnumType.STRING)
   private Species species;
 
   @Column(name = "breed")
@@ -43,6 +40,10 @@ public class Pet {
 
   @Column(name = "weight_kg")
   private BigDecimal weightKg;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "gender")
+  private Gender gender;
 
   @Column(name = "medical_conditions")
   private String medicalConditions;
@@ -62,7 +63,22 @@ public class Pet {
   @Column(name = "created_at")
   private Instant createdAt;
 
+  @Column(name = "updated_at")
+  private Instant updatedAt;
+
   @OneToMany(mappedBy = "pet")
   private Set<Booking> bookings = new LinkedHashSet<>();
+
+  @PrePersist
+  public void onCreate() {
+    this.createdAt = Instant.now();
+    this.updatedAt = Instant.now();
+    this.active = true;
+  }
+
+  @PreUpdate
+  public void onUpdate() {
+    this.updatedAt = Instant.now();
+  }
 
 }
