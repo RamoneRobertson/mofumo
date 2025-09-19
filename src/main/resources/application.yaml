@@ -1,13 +1,33 @@
 spring:
   application:
     name: mofumo
+  # UNCOMMENT TO USE IN MEMORY DATABASE OUTSIDE OF DOCKER
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: admin_viewer
+    password: password
   jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
+  sql:
+    init:
+      mode: never
   jwt:
     secret: ${JWT_SECRET}
     accessTokenExpiration: 300 # 5 minutes in seconds
     refreshTokenExpiration: 604800 # 7 days in seconds
+server:
+  port: 4000
+
+logging:
+  level:
+    root: info
+
+

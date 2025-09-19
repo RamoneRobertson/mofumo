@@ -37,18 +37,6 @@ public class Provider {
   @Column(name = "description")
   private String description;
 
-  @Column(name = "service_types")
-  @JdbcTypeCode(SqlTypes.JSON)
-  private Map<String, Object> serviceTypes;
-
-  @Column(name = "languages_spoken")
-  @JdbcTypeCode(SqlTypes.JSON)
-  private Map<String, Object> languagesSpoken;
-
-  @Column(name = "service_areas")
-  @JdbcTypeCode(SqlTypes.JSON)
-  private Map<String, Object> serviceAreas;
-
   @Column(name = "mobile_service")
   private Boolean mobileService;
 

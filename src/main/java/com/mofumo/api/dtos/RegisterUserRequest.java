@@ -56,6 +56,6 @@ public class RegisterUserRequest {
   @Size(max = 2, message = "Preferred language can only have a maximum of 2 characters. (e.g. jp,en)")
   private String preferredLang;
 
-  private Role role = Role.CUSTOMER;
+  private Role role;
 
 }
